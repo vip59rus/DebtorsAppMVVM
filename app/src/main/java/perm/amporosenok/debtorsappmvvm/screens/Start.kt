@@ -28,6 +28,7 @@ fun StartScreen(navController: NavHostController) {
     val mViewModel:MainViewModel =
         viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
 
+    //hohoho
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
