@@ -6,6 +6,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +25,7 @@ import perm.amporosenok.debtorsappmvvm.utils.TYPE_ROOM
 
 @Composable
 fun StartScreen(navController: NavHostController) {
+
 
     val context = LocalContext.current
     val mViewModel:MainViewModel =
@@ -42,8 +45,10 @@ fun StartScreen(navController: NavHostController) {
             Text(text = "What will we use?")
             Button(
                 onClick = {
-                    mViewModel.initDatabase(TYPE_ROOM)
-                    navController.navigate(route = NavRoute.Main.route)
+                    mViewModel.initDatabase(TYPE_ROOM){
+                        navController.navigate(route = NavRoute.Main.route)
+                    }
+
                 },
                 modifier = Modifier
                     .width(200.dp)
@@ -54,8 +59,11 @@ fun StartScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    mViewModel.initDatabase(TYPE_FIREBASE)
-                    navController.navigate(route = NavRoute.Main.route)
+                    mViewModel.initDatabase(TYPE_FIREBASE){
+                        navController.navigate(route = NavRoute.Main.route)
+                    }
+
+
                 },
                 modifier = Modifier
                     .width(200.dp)
