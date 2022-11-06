@@ -1,6 +1,8 @@
 package perm.amporosenok.debtorsappmvvm.screens
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,12 +27,21 @@ import perm.amporosenok.debtorsappmvvm.MainViewModelFactory
 import perm.amporosenok.debtorsappmvvm.model.Note
 import perm.amporosenok.debtorsappmvvm.navigation.NavRoute
 import perm.amporosenok.debtorsappmvvm.ui.theme.DebtorsAppMVVMTheme
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.ADD_DEBTOR
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.ADD_NEW_NOTE
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.NOTE_MONEY
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.NOTE_NAME
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.Date
 
 @Composable
 fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
+    val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+    val currentD = sdf.format(Date())
 
     var currentDate by remember {
-        mutableStateOf("")
+        mutableStateOf(currentD)
     }
 
     var name by remember {
@@ -51,13 +62,13 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Add New Debtor",
+                text = ADD_NEW_NOTE,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
             Text(
-                text = "Current Date",
+                text = currentDate,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -69,7 +80,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
                     name = it
                     isButtonEnabled = name.isNotEmpty() && money.isNotEmpty()
                 },
-                label = { Text(text = "Note Name") },
+                label = { Text(text = NOTE_NAME) },
                 isError = name.isEmpty()
             )
 
@@ -79,7 +90,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
                     money = it
                     isButtonEnabled = name.isNotEmpty() && money.isNotEmpty()
                 },
-                label = { Text(text = "Note Money") },
+                label = { Text(text = NOTE_MONEY) },
                 isError = money.isEmpty()
             )
 
@@ -98,7 +109,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
 
                 }
             ) {
-                Text(text = "Add Debtor")
+                Text(text = ADD_DEBTOR)
             }
         }
 

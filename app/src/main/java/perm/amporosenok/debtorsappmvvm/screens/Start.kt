@@ -18,6 +18,9 @@ import perm.amporosenok.debtorsappmvvm.MainViewModel
 import perm.amporosenok.debtorsappmvvm.MainViewModelFactory
 import perm.amporosenok.debtorsappmvvm.navigation.NavRoute
 import perm.amporosenok.debtorsappmvvm.ui.theme.DebtorsAppMVVMTheme
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.FIREBASE_DATABASE
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.ROOM_DATABASE
+import perm.amporosenok.debtorsappmvvm.utils.Constants.Keys.WHAT_WILL_WE_USE
 import perm.amporosenok.debtorsappmvvm.utils.TYPE_FIREBASE
 import perm.amporosenok.debtorsappmvvm.utils.TYPE_ROOM
 
@@ -40,7 +43,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "What will we use?")
+            Text(text = WHAT_WILL_WE_USE)
             Button(
                 onClick = {
                     mViewModel.initDatabase(TYPE_ROOM){
@@ -52,7 +55,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                     .width(200.dp)
                     .padding(vertical = 8.dp)
             ) {
-                Text(text = "Room Database")
+                Text(text = ROOM_DATABASE)
             }
 
             Button(
@@ -67,7 +70,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                     .width(200.dp)
                     .padding(vertical = 8.dp)
             ) {
-                Text(text = "Firebase Database")
+                Text(text = FIREBASE_DATABASE)
             }
             Row(
                 modifier = Modifier
