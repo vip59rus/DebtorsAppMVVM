@@ -28,13 +28,9 @@ import perm.amporosenok.debtorsappmvvm.navigation.NavRoute
 import perm.amporosenok.debtorsappmvvm.ui.theme.DebtorsAppMVVMTheme
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
 
-    val context = LocalContext.current
-    val mViewModel: MainViewModel =
-        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-
-
+    val notes = viewModel.readAllNotes().observeAsState(listOf()).value
 
     Scaffold(
         floatingActionButton = {
@@ -48,18 +44,11 @@ fun MainScreen(navController: NavHostController) {
             }
         }
     ) {
-//        Column() {
-//            NoteItem(currentDate = "22 10 01", name = "PETR", money = "100", navController = navController)
-//            NoteItem(currentDate = "22 10 02", name = "PETR", money = "200", navController = navController)
-//            NoteItem(currentDate = "22 10 03", name = "PETR", money = "300", navController = navController)
-//            NoteItem(currentDate = "22 10 04", name = "PETR", money = "400", navController = navController)
-//        }
-//        LazyColumn {
-//            items(notes) { note ->
-//                NoteItem(note = note, navController = navController)
-//            }
-//        }
-
+        LazyColumn {
+            items(notes) { note ->
+                NoteItem(note = note, navController = navController)
+            }
+        }
     }
 }
 
@@ -102,6 +91,9 @@ fun NoteItem(note: Note, navController: NavHostController) {
 @Composable
 fun PrevMainScreen() {
     DebtorsAppMVVMTheme() {
-        MainScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        MainScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

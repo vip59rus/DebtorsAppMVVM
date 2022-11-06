@@ -1,10 +1,10 @@
 package perm.amporosenok.debtorsappmvvm.screens
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
@@ -12,17 +12,22 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import perm.amporosenok.debtorsappmvvm.MainViewModel
+import perm.amporosenok.debtorsappmvvm.MainViewModelFactory
+import perm.amporosenok.debtorsappmvvm.model.Note
 import perm.amporosenok.debtorsappmvvm.navigation.NavRoute
 import perm.amporosenok.debtorsappmvvm.ui.theme.DebtorsAppMVVMTheme
 
 @Composable
-fun AddScreen(navController: NavHostController) {
+fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
 
     var currentDate by remember {
         mutableStateOf("")
@@ -33,6 +38,10 @@ fun AddScreen(navController: NavHostController) {
     }
     var money by remember {
         mutableStateOf("")
+    }
+
+    var isButtonEnabled by remember {
+        mutableStateOf(false)
     }
 
     Scaffold() {
@@ -56,21 +65,37 @@ fun AddScreen(navController: NavHostController) {
 
             OutlinedTextField(
                 value = name,
-                onValueChange = { name = it },
-                label = { Text(text = "Note Name") }
+                onValueChange = {
+                    name = it
+                    isButtonEnabled = name.isNotEmpty() && money.isNotEmpty()
+                },
+                label = { Text(text = "Note Name") },
+                isError = name.isEmpty()
             )
 
             OutlinedTextField(
                 value = money,
-                onValueChange = { money = it },
-                label = { Text(text = "Note Money") }
+                onValueChange = {
+                    money = it
+                    isButtonEnabled = name.isNotEmpty() && money.isNotEmpty()
+                },
+                label = { Text(text = "Note Money") },
+                isError = money.isEmpty()
             )
 
             Button(
-                modifier = Modifier
-                    .padding(top = 16.dp),
+                modifier = Modifier.padding(top = 16.dp),
+                enabled = isButtonEnabled,
                 onClick = {
-                    navController.navigate(NavRoute.Main.route)
+                    viewModel.addNote(
+                        note = Note(
+                            currentDate = currentDate,
+                            name = name,
+                            money = money,
+                        )) {
+                        navController.navigate(NavRoute.Main.route)
+                    }
+
                 }
             ) {
                 Text(text = "Add Debtor")
@@ -85,6 +110,9 @@ fun AddScreen(navController: NavHostController) {
 @Composable
 fun PrevAddScreen() {
     DebtorsAppMVVMTheme() {
-        AddScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        AddScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

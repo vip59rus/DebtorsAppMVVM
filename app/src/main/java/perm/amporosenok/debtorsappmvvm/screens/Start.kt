@@ -6,8 +6,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,7 +22,7 @@ import perm.amporosenok.debtorsappmvvm.utils.TYPE_FIREBASE
 import perm.amporosenok.debtorsappmvvm.utils.TYPE_ROOM
 
 @Composable
-fun StartScreen(navController: NavHostController) {
+fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
 
 
     val context = LocalContext.current
@@ -103,6 +101,9 @@ fun StartScreen(navController: NavHostController) {
 @Composable
 fun PrevStartScreen() {
     DebtorsAppMVVMTheme() {
-        StartScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        StartScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }
